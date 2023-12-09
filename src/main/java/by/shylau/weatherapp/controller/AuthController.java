@@ -63,9 +63,7 @@ public class AuthController {
             model.addAttribute("errorRepeatPassword", "Пароль не совпадает с проверочным");
             return "auth/regis";
         }
-        System.err.println("userdto = " + userDTO);
         User user = userMapper.UserDTOToUser(userDTO);
-        System.err.println("user = " + user);
 
         if (FoolProof.defenceForFool(user.getPassword()) != null) {
             model.addAttribute("foolProof", FoolProof.defenceForFool(user.getPassword()));
