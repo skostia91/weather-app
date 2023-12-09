@@ -41,6 +41,7 @@ public class AuthService {
         try {
             userRepository.save(user);
         } catch (RuntimeException e) {
+            System.out.println("11111111111111111111111111111111111111");
             return false;
         }
         return true;

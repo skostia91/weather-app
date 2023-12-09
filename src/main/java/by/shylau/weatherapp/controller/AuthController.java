@@ -81,8 +81,8 @@ public class AuthController {
 
             return "auth/regis";
         }
-        return "/auth/login";
-    }
+        return "redirect:/weather/login";
+    }//добавил redirect:weateher в адрес бо ломается прога
 
     @GetMapping("/login")
     public String loginPage() {
