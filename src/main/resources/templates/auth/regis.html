@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+
+</head>
+<body>
+<h2>Регистрация юзера</h2>
+
+<form th:method="POST" th:action="@{/weather/register}" th:object="${user}">
+    <label for="login">Введите логин</label>
+    <input type="text" th:field="*{login}" id="login">
+    <div style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login Error</div>
+    <br/>
+    <label for="password">Введите пароль: </label>
+    <input type="password" th:field="*{password}" id="password">
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error </div>
+    <br/>
+    <label for="repeatPassword">Повторите пароль: </label>
+    <input type="password" th:field="*{repeatPassword}" id="repeatPassword">
+    <div style="color:red" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}">password error </div>
+    <br/>
+    <input type="submit" value="Зарегистрироваться!">
+</form>
+<div th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></div>
+<div th:if="${foolProof}" th:text="${foolProof}" style="color: red;"></div>
+<div th:if="${errorRepeatPassword}" th:text="${errorRepeatPassword}" style="color: red;"></div>
+
+<br/>
+<br/>
+<a href="/weather">
+    <button class="btn-primary">На главную</button>
+</a>
+<br/>
+
+</body>
+</html>
