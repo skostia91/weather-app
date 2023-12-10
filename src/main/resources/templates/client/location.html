@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Добавить локацию</title>
+    <title>Личный кабинет</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -17,9 +17,6 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active">Личный кабинет</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/weather/show">Смотреть добавленные локации</a>
                 </li>
@@ -56,7 +53,6 @@
 
 <div th:if="${errorTryRepeatAddLocation}" th:text="${errorTryRepeatAddLocation}" style="color: red;"></div>
 <div th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></div>
-<div th:if="${errorNullField}" th:text="${errorNullField}" style="color: red;"></div>
 
 <div class="container">
     <div class="row">

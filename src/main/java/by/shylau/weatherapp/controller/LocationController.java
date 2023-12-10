@@ -96,10 +96,10 @@ public class LocationController {
                 model.addAttribute("location", findLocation);
             }
         } catch (HttpClientErrorException.BadRequest e) {
-            model.addAttribute("errorNullField", "Введите название локации: города/деревни");
+            model.addAttribute("errorMessage", "Введите название локации: города/деревни");
             return "client/location";
         } catch (RuntimeException e) {
-            model.addAttribute("errorInternet", "Проверьте интернет");
+            model.addAttribute("errorMessage", "Проверьте интернет");
             return "client/location";
         }
         return "client/location";
@@ -132,8 +132,7 @@ public class LocationController {
     }
 
     @GetMapping("/delete/{name}")
-    public String deleteLocation(
-            @CookieValue(value = "user_id") String userId,
+    public String deleteLocation(@CookieValue(value = "user_id") String userId,
                                  @PathVariable("name") String name) {
         log.info("LocationController.deleteLocation userId = {}", userId);
         log.info("LocationController.deleteLocation name = {}", name);
@@ -144,18 +143,12 @@ public class LocationController {
     }
 
     @GetMapping("/logout")
-    public String logout(@CookieValue(value = "session_id") String sessionId,
-                         @CookieValue(value = "user_id") String userId) {
-        log.info("LocationController.home get session_id {}", sessionId);
-
-        sessionService.deleteSessionByID(Integer.parseInt(userId));
-
+    public String logout() {
         return "client/logout";
-//        return "redirect:/weather";
     }
 
     @GetMapping("/logout-second")
-    public String logout() {
+    public String logoutSecond() {
         return "client/logout-second";
     }
 
@@ -165,7 +158,11 @@ public class LocationController {
     }
 
     @GetMapping("/logout-last")
-    public String logoutLast() {
+    public String logoutLast(@CookieValue(value = "session_id") String sessionId,
+                             @CookieValue(value = "user_id") String userId) {
+
+        log.info("LocationController.home get session_id {}", sessionId);
+        sessionService.deleteSessionByID(Integer.parseInt(userId));
         return "client/logout-last";
     }
 }

@@ -83,10 +83,8 @@ public class AuthController {
             return "auth/regis";
         }
 
-//        Cookie resultSuccess = new Cookie("result_reg", "success");
         Cookie nameNewUser = new Cookie("login_user", userDTO.getLogin());
 
-  //      response.addCookie(resultSuccess);
         response.addCookie(nameNewUser);
 
         return "redirect:/weather/login-new";
@@ -100,9 +98,16 @@ public class AuthController {
     @GetMapping("/login-new")
     public String loginPage(@CookieValue(value = "login_user") String name,
                             Model model) {
-        model.addAttribute("successRegistration",
+        model.addAttribute("message",
                 "Поздравляю, " + name + " вы успешно зарегистрировались, " +
                         "теперь введите логин и пароль чтобы войти в систему");
+        return "auth/login";
+    }
+
+    @GetMapping("/login-retry")
+    public String loginPage(Model model) {
+        model.addAttribute("errorMessage",
+                "Время сессии истекло. Пожалуйста, введите логин и пароль чтобы зайти");
         return "auth/login";
     }
 
