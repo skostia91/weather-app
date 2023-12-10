@@ -56,7 +56,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registrationUser(@ModelAttribute("user") @Valid UserDTO userDTO,
+    public String registrationUser(HttpServletResponse response,
+                                   @ModelAttribute("user") @Valid UserDTO userDTO,
                                    BindingResult bindingResult,
                                    Model model) {
         if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
@@ -81,11 +82,27 @@ public class AuthController {
 
             return "auth/regis";
         }
-        return "redirect:/weather/login";
-    }//добавил redirect:weateher в адрес бо ломается прога
+
+//        Cookie resultSuccess = new Cookie("result_reg", "success");
+        Cookie nameNewUser = new Cookie("login_user", userDTO.getLogin());
+
+  //      response.addCookie(resultSuccess);
+        response.addCookie(nameNewUser);
+
+        return "redirect:/weather/login-new";
+    }
 
     @GetMapping("/login")
     public String loginPage() {
+        return "auth/login";
+    }
+
+    @GetMapping("/login-new")
+    public String loginPage(@CookieValue(value = "login_user") String name,
+                            Model model) {
+        model.addAttribute("successRegistration",
+                "Поздравляю, " + name + " вы успешно зарегистрировались, " +
+                        "теперь введите логин и пароль чтобы войти в систему");
         return "auth/login";
     }
 

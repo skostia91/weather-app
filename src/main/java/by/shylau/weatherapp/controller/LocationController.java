@@ -150,6 +150,22 @@ public class LocationController {
 
         sessionService.deleteSessionByID(Integer.parseInt(userId));
 
-        return "redirect:/weather";
+        return "client/logout";
+//        return "redirect:/weather";
+    }
+
+    @GetMapping("/logout-second")
+    public String logout() {
+        return "client/logout-second";
+    }
+
+    @GetMapping("/logout-three")
+    public String logoutThree() {
+        return "client/logout-three";
+    }
+
+    @GetMapping("/logout-last")
+    public String logoutLast() {
+        return "client/logout-last";
     }
 }

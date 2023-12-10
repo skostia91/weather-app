@@ -7,8 +7,8 @@ import lombok.*;
 
 import java.util.List;
 
-//@Getter
-//@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -28,29 +28,4 @@ public class User {
     @NotBlank(message = "Пароль не должен быть пустым")
     @Column(name = "password", nullable = false)
     private String password;
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

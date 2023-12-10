@@ -17,21 +17,6 @@ public class LocationService {
         this.locationRepository = locationRepository;
     }
 
-    //что мы тут делали???
-//    public Location getLocationById(int id) {
-//        Location location = null;
-//        Optional<Location> optional = locationRepository.findById(id);
-//        if (optional.isPresent()) {
-//            location = optional.get();
-//        }
-//        return location;
-//    }
-
-//    public Location getLocationByName(String name) {
-//        System.err.println(locationRepository.findByName(name));
-//        return locationRepository.findByName(name);
-//    }
-
     public void saveLocation(Location location) {
         locationRepository.save(location);
     }
@@ -41,9 +26,6 @@ public class LocationService {
     }
 
     public void deleteLocationByIdAndName(int idUser, String nameLocation) {
-        //System.err.println("просмотр ======= " + idUser + "  +++ " + nameLocation);
         locationRepository.deleteLocationByIdAndName(idUser, nameLocation);
     }
-
-
 }
