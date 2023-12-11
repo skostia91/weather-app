@@ -20,7 +20,7 @@
     <br/>
     <input type="submit" value="Войти"/>
 </form>
-<div th:if="${successRegistration}" th:text="${successRegistration}" style="color: green;"></div>
+<div th:if="${message}" th:text="${message}" style="color: green;"></div>
 <div th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></div>
 
 

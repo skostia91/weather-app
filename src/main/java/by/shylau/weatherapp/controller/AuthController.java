@@ -84,7 +84,6 @@ public class AuthController {
         }
 
         Cookie nameNewUser = new Cookie("login_user", userDTO.getLogin());
-
         response.addCookie(nameNewUser);
 
         return "redirect:/weather/login-new";
@@ -96,8 +95,7 @@ public class AuthController {
     }
 
     @GetMapping("/login-new")
-    public String loginPage(@CookieValue(value = "login_user") String name,
-                            Model model) {
+    public String loginPage(@CookieValue(value = "login_user") String name, Model model) {
         model.addAttribute("message",
                 "Поздравляю, " + name + " вы успешно зарегистрировались, " +
                         "теперь введите логин и пароль чтобы войти в систему");
@@ -106,6 +104,15 @@ public class AuthController {
 
     @GetMapping("/login-retry")
     public String loginPage(Model model) {
+        model.addAttribute("errorMessage",
+                "Время сессии истекло. Пожалуйста, введите логин и пароль чтобы зайти");
+        return "auth/login";
+    }
+
+    //костыль, временное решение проблемы для redirect:/delete/name
+    //не корректно перенаправлял при смерти сессии
+    @GetMapping("/delete/login-retry")
+    public String loginPageDeleteSessionDied(Model model) {
         model.addAttribute("errorMessage",
                 "Время сессии истекло. Пожалуйста, введите логин и пароль чтобы зайти");
         return "auth/login";
@@ -142,7 +149,7 @@ public class AuthController {
             Session newSession = new Session(
                     sessionId,
                     userId,
-                    LocalDateTime.now().plusHours(timeLifeSession)); // срок действия сессии 4 часа
+                    LocalDateTime.now().plusMinutes(timeLifeSession)); //срок действия сессии 1 минута
 
             if (sessionService.checkSessionIntoDB(userId)) {
                 sessionService.deleteSessionByID(userId);

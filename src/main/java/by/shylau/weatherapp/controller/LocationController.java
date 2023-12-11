@@ -38,8 +38,9 @@ public class LocationController {
     }
 
     @GetMapping("/home")
-    public String home(@CookieValue(value = "session_id") String sessionId,
-                       @CookieValue(value = "user_id") String userId,
+    public String home(@CookieValue(value = "user_id") String userId,
+            @CookieValue(value = "session_id") String sessionId,
+
                        Model model) {
         log.info("LocationController.home get session_id {}", sessionId);
         log.info("LocationController.home get user_id {}", userId);
