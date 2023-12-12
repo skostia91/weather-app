@@ -1,7 +1,6 @@
 package by.shylau.weatherapp.service;
 
 import by.shylau.weatherapp.model.Session;
-import by.shylau.weatherapp.model.User;
 import by.shylau.weatherapp.repository.SessionRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -34,16 +33,17 @@ public class SessionService {
 
     private void checkAndInvalidateSessions() {
         long timeNow = System.currentTimeMillis();
-        System.err.println("timeNow = " + timeNow);
+//проверить как выводит
+        log.info("time now {}", timeNow / (60 * 1000));
         List<Session> sessions = getSessions();
         for (Session session : sessions) {
             if (session.getId() != null) {
-                System.err.println("session id = " + session.getId());
+              //  System.err.println("session id = " + session.getId());
                 long timeSessionDie = session.getExpiresAt()
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
                         .toEpochMilli();
-                System.err.println("timeSessionDie " + timeSessionDie);
+                //System.err.println("timeSessionDie " + timeSessionDie);
                 long diffInMillis = Math.abs(timeNow - timeSessionDie);
                 long diffInMinutes = diffInMillis / (60 * 1000);
                 log.info("Разница между значениями времени: " + diffInMinutes + " минут у сессии " + session.getId());
@@ -66,25 +66,9 @@ public class SessionService {
     public Session getSessionByUserId(int userId) {
         Session session = null;
         Optional<Session> optional = sessionRepository.findByUserId(userId);
-        //System.err.println("sss = " + optional);
         if (optional.isPresent()) {
             session = optional.get();
-          //  System.err.println("session = " + session);
         }
-        return session;
-    }
-
-    public Session getSessionById(String id) throws RuntimeException {
-        Session session = null;
-        //try {
-            Optional<Session> optional = sessionRepository.findById(id);
-            if (optional.isPresent()) {
-                session = optional.get();
-            }
-//        } catch (RuntimeException e) {
-//            System.err.println("errrorr eroorrr");
-       // }
-     //   System.err.println("SessionService.getSessionById = " + session);
         return session;
     }
 

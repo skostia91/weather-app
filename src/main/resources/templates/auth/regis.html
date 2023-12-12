@@ -19,11 +19,12 @@
     <br/>
     <label for="password">Введите пароль: </label>
     <input type="password" th:field="*{password}" id="password">
-    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error </div>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
     <br/>
     <label for="repeatPassword">Повторите пароль: </label>
     <input type="password" th:field="*{repeatPassword}" id="repeatPassword">
-    <div style="color:red" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}">password error </div>
+    <div style="color:red" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}">password error
+    </div>
     <br/>
     <input type="submit" value="Зарегистрироваться!">
 </form>

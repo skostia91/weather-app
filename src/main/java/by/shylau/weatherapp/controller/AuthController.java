@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
-
 @Slf4j
 @Controller
 @RequestMapping("/weather")
@@ -88,6 +87,7 @@ public class AuthController {
 
         return "redirect:/weather/login-new";
     }
+
 
     @GetMapping("/login")
     public String loginPage() {

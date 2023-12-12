@@ -11,7 +11,8 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-dark bg-dark">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -27,17 +28,18 @@
 
 <div class="container text-center">
     <div align="right">
-        <h5>Привет, <span th:text="${name}"></span>!<a href="/weather/logout"><button class="btn-primary">Выйти из аккаунта</button></a></h5>
+        <h5>Привет, <span th:text="${name}"></span>!<a href="/weather/logout">
+            <button class="btn-primary">Выйти из аккаунта</button>
+        </a></h5>
     </div>
     <div align="center">
-       </div>
+    </div>
 </div>
 
 <form action="/weather/findLocation" method="post">
     <label for="location">Локация:</label>
     <input type="text" id="location" name="location">
     <input type="submit" value="Найти">
-
 </form>
 
 
@@ -46,7 +48,7 @@
 <div th:if="${location}">
     <p>Найденная локация: <span th:text="${location}"></span></p>
     <form action="/weather/addLocation" method="post">
-        <input type="hidden" name="location" th:value="${location}" />
+        <input type="hidden" name="location" th:value="${location}"/>
         <button type="submit">Добавить</button>
     </form>
 </div>
@@ -62,12 +64,12 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             <h4 class="text">Локация: <a th:text="${location.getName}"/></h4>
-                        <p class="card-text">
+                            <p class="card-text">
                             <h4 class="text">Температура: <a th:text="${location.getTemp}"/></h4>
-                            </h5>
-                            <h4 class="text">Широта: <a th:text="${location.getLat}"/></h4>
-                            </br>
-                            <h4 class="text">Долгота: <a th:text="${location.getLon}"/></h4>
+                        </h5>
+                        <h4 class="text">Широта: <a th:text="${location.getLat}"/></h4>
+                        </br>
+                        <h4 class="text">Долгота: <a th:text="${location.getLon}"/></h4>
                         <a th:href="@{/weather/delete/{name}(name=${location.getName})}">
                             <button class="btn-danger">Удалить</button>
                         </a>

@@ -39,8 +39,7 @@ public class LocationController {
 
     @GetMapping("/home")
     public String home(@CookieValue(value = "user_id") String userId,
-            @CookieValue(value = "session_id") String sessionId,
-
+                       @CookieValue(value = "session_id") String sessionId,
                        Model model) {
         log.info("LocationController.home get session_id {}", sessionId);
         log.info("LocationController.home get user_id {}", userId);
@@ -162,7 +161,7 @@ public class LocationController {
     public String logoutLast(@CookieValue(value = "session_id") String sessionId,
                              @CookieValue(value = "user_id") String userId) {
 
-        log.info("LocationController.home get session_id {}", sessionId);
+        log.info("LocationController.home delete session_id {}", sessionId);
         sessionService.deleteSessionByID(Integer.parseInt(userId));
         return "client/logout-last";
     }

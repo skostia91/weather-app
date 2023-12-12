@@ -2,7 +2,6 @@ package by.shylau.weatherapp.service;
 
 import by.shylau.weatherapp.dto.WeatherRequestDTO;
 import by.shylau.weatherapp.dto.WeatherResponseDTO;
-import by.shylau.weatherapp.model.Location;
 import by.shylau.weatherapp.repository.LocationRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -13,10 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.UnknownHostException;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
