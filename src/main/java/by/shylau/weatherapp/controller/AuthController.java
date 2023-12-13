@@ -110,7 +110,7 @@ public class AuthController {
     }
 
     //костыль, временное решение проблемы для redirect:/delete/name
-    //не корректно перенаправлял при смерти сессии
+    //не корректно перенаправлял при смерти сессии в аоп
     @GetMapping("/delete/login-retry")
     public String loginPageDeleteSessionDied(Model model) {
         model.addAttribute("errorMessage",
@@ -149,7 +149,8 @@ public class AuthController {
             Session newSession = new Session(
                     sessionId,
                     userId,
-                    LocalDateTime.now().plusMinutes(timeLifeSession)); //срок действия сессии 1 минута
+  //                  LocalDateTime.now().plusMinutes(timeLifeSession)); //срок действия сессии 1 минута
+                    LocalDateTime.now().plusHours(timeLifeSession)); //срок действия сессии 1 час
 
             if (sessionService.checkSessionIntoDB(userId)) {
                 sessionService.deleteSessionByID(userId);

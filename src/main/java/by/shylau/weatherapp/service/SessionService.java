@@ -33,23 +33,20 @@ public class SessionService {
 
     private void checkAndInvalidateSessions() {
         long timeNow = System.currentTimeMillis();
-//проверить как выводит
         log.info("time now {}", timeNow / (60 * 1000));
         List<Session> sessions = getSessions();
         for (Session session : sessions) {
             if (session.getId() != null) {
-              //  System.err.println("session id = " + session.getId());
                 long timeSessionDie = session.getExpiresAt()
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
                         .toEpochMilli();
-                //System.err.println("timeSessionDie " + timeSessionDie);
                 long diffInMillis = Math.abs(timeNow - timeSessionDie);
                 long diffInMinutes = diffInMillis / (60 * 1000);
-                log.info("Разница между значениями времени: " + diffInMinutes + " минут у сессии " + session.getId());
+                log.info("Время жизни у сессии " + session.getId() + ": " + diffInMinutes + " минут");
 
                 if (timeNow > timeSessionDie) {
-                    log.warn("Сессия протухла для пользователя: " + session.getUserId());
+                    log.warn("Сессия умерла у пользователя: " + session.getUserId());
                     sessionRepository.deleteSessionByUserId(session.getUserId());
                 } else {
                     log.info("Сессия действительна для пользователя: " + session.getUserId());

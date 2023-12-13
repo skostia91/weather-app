@@ -12,5 +12,4 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
     Optional<Session> findByUserId(int userId);
     @Transactional
     void deleteSessionByUserId(int id);
-    Optional<Session> findById(String id);
 }
