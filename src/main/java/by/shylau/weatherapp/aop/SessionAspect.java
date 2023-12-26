@@ -1,6 +1,9 @@
 package by.shylau.weatherapp.aop;
 
 import by.shylau.weatherapp.service.SessionService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,13 +15,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class SessionAspect {
-    private final SessionService sessionService;
-
-    @Autowired
-    public SessionAspect(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
+    SessionService sessionService;
 
     @Pointcut("execution(* by.shylau.weatherapp.controller.LocationController.home(..)) || " +
             "execution(* by.shylau.weatherapp.controller.LocationController.find(..)) || " +

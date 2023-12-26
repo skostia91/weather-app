@@ -2,6 +2,9 @@ package by.shylau.weatherapp.service;
 
 import by.shylau.weatherapp.model.Location;
 import by.shylau.weatherapp.repository.LocationRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,13 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LocationService {
-    private final LocationRepository locationRepository;
-
-    @Autowired
-    public LocationService(LocationRepository locationRepository) {
-        this.locationRepository = locationRepository;
-    }
+    LocationRepository locationRepository;
 
     @Transactional(rollbackFor = RuntimeException.class)
     public void saveLocation(Location location) {

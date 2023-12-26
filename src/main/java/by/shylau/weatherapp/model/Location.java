@@ -2,6 +2,7 @@ package by.shylau.weatherapp.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -9,18 +10,24 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "locations")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    int id;
 
-    private String name;
+    @Column(name = "name", nullable = false)
+    String name;
 
     @Column(name = "user_id", nullable = false)
-    private int userId;
-    private double latitude;
-    private double longitude;
+    int userId;
+
+    @Column(name = "latitude", nullable = false)
+    double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    double longitude;
 
     public Location(String name, int userId, double latitude, double longitude) {
         this.name = name;

@@ -8,8 +8,10 @@ import by.shylau.weatherapp.service.LocationService;
 import by.shylau.weatherapp.service.SessionService;
 import by.shylau.weatherapp.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,24 +20,18 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.shylau.weatherapp.mapper.MapperService.convertWeatherResponseDTOToLocation;
+import static by.shylau.weatherapp.service.ConverterService.convertWeatherResponseDTOToLocation;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/weather")
 public class LocationController {
-    private final ApiService apiService;
-    private final UserService userService;
-    private final LocationService locationService;
-    private final SessionService sessionService;
-
-    @Autowired
-    public LocationController(ApiService apiService, UserService userService, LocationService locationService, SessionService sessionService) {
-        this.apiService = apiService;
-        this.userService = userService;
-        this.locationService = locationService;
-        this.sessionService = sessionService;
-    }
+    ApiService apiService;
+    UserService userService;
+    LocationService locationService;
+    SessionService sessionService;
 
     @GetMapping("/home")
     public String home(@CookieValue(value = "user_id") String userId,

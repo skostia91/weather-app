@@ -1,15 +1,15 @@
 package by.shylau.weatherapp.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Getter
-@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class WeatherResponseDTO {
-    private String name;
-    private double temp;
-    private double lon;
-    private double lat;
+    String name;
+    double temp;
+    double lon;
+    double lat;
 }

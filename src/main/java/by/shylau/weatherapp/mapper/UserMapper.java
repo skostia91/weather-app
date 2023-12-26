@@ -12,4 +12,6 @@ public interface UserMapper {
     @Mapping(target = "login", source = "login")
     @Mapping(target = "password", source = "password")
     User UserDTOToUser(UserDTO userDTO);
+
+
 }

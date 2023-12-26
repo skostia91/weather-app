@@ -3,6 +3,10 @@ package by.shylau.weatherapp.service;
 import by.shylau.weatherapp.model.Session;
 import by.shylau.weatherapp.repository.SessionRepository;
 import jakarta.annotation.PostConstruct;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,19 +20,16 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SessionService {
-    private final SessionRepository sessionRepository;
-    private ScheduledExecutorService executor;
+    SessionRepository sessionRepository;
+    @NonFinal ScheduledExecutorService executor;
 
     @PostConstruct
     public void init() {
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(this::checkAndInvalidateSessions, 0, 1, TimeUnit.MINUTES);
-    }
-
-    @Autowired
-    public SessionService(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
     }
 
     private void checkAndInvalidateSessions() {

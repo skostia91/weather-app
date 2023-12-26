@@ -2,12 +2,12 @@ package by.shylau.weatherapp.service;
 
 import by.shylau.weatherapp.dto.WeatherRequestDTO;
 import by.shylau.weatherapp.dto.WeatherResponseDTO;
-import by.shylau.weatherapp.repository.LocationRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -15,20 +15,13 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiService {
     @Value(value = "${api.key}")
-    private String apiKey;
+    String apiKey;
 
     @Value(value = "${api.url}")
-    private String apiUrl;
-
-    private final LocationRepository locationRepository;
-
-    @Autowired
-    public ApiService(LocationRepository locationRepository) {
-        this.locationRepository = locationRepository;
-    }
-
+    String apiUrl;
 
     public WeatherResponseDTO fetchDataFromApi(String location) throws JsonProcessingException {
         WeatherResponseDTO weatherResponseDTO = null;

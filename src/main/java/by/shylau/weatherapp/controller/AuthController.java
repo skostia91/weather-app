@@ -13,9 +13,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,22 +29,16 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/weather")
 public class AuthController {
     @Value(value = "${session.timelife}")
-    private int timeLifeSession;
-    private final AuthService authService;
-    private final SessionService sessionService;
-    private final UserService userService;
-
-    private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
-
-    @Autowired
-    public AuthController(AuthService authService, SessionService sessionService, UserService userService) {
-        this.authService = authService;
-        this.sessionService = sessionService;
-        this.userService = userService;
-    }
+    @NonFinal int timeLifeSession;
+    AuthService authService;
+    SessionService sessionService;
+     UserService userService;
+    UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     @GetMapping
     public String start() {
