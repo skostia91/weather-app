@@ -16,7 +16,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User findByName(String name) {
+    public User getUserByLogin(String name) {
         User user = null;
         Optional<User> optional = userRepository.findByLogin(name);
         if (optional.isPresent()) {

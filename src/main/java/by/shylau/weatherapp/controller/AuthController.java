@@ -88,7 +88,6 @@ public class AuthController {
         return "redirect:/weather/login-new";
     }
 
-
     @GetMapping("/login")
     public String loginPage() {
         return "auth/login";
@@ -133,7 +132,7 @@ public class AuthController {
         } else {
             HttpSession session = request.getSession();
 
-            int userId = userService.findByName(user.getLogin()).getId();
+            int userId = userService.getUserByLogin(user.getLogin()).getId();
 
             String sessionId = session.getId();
             session.setAttribute("userId", userId);

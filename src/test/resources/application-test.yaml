@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/db
+    username: root
+    password: 123
+
+api:
+  key: ab9b4386c9316ed51c2bc5791651556c
+  url: https://api.openweathermap.org/data/2.5/weather?q=
+
+session:
+  timelife: 1
