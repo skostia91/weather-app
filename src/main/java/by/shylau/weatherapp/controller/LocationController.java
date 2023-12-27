@@ -1,6 +1,7 @@
 package by.shylau.weatherapp.controller;
 
 import by.shylau.weatherapp.dto.WeatherResponseDTO;
+import by.shylau.weatherapp.exceptions.NotFoundExceptions;
 import by.shylau.weatherapp.model.Location;
 import by.shylau.weatherapp.model.User;
 import by.shylau.weatherapp.service.ApiService;
@@ -87,6 +88,7 @@ public class LocationController {
 
             if (findLocation == null) {
                 model.addAttribute("errorMessage", "Локация " + location + " не найдена");
+               // throw new NotFoundExceptions("Локация " + location + " не найдена");
             } else {
                 model.addAttribute("successMessage", "Локация найдена");
                 model.addAttribute("location", findLocation);
