@@ -28,9 +28,7 @@
     <br/>
     <input type="submit" value="Зарегистрироваться!">
 </form>
-<div th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></div>
-<div th:if="${foolProof}" th:text="${foolProof}" style="color: red;"></div>
-<div th:if="${errorRepeatPassword}" th:text="${errorRepeatPassword}" style="color: red;"></div>
+<div th:if="${error}" th:text="${error}" style="color: red;"></div>
 
 <br/>
 <br/>

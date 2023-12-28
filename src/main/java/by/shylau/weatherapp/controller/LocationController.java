@@ -1,7 +1,6 @@
 package by.shylau.weatherapp.controller;
 
 import by.shylau.weatherapp.dto.WeatherResponseDTO;
-import by.shylau.weatherapp.exceptions.NotFoundExceptions;
 import by.shylau.weatherapp.model.Location;
 import by.shylau.weatherapp.model.User;
 import by.shylau.weatherapp.service.ApiService;
@@ -21,7 +20,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.shylau.weatherapp.service.ConverterService.convertWeatherResponseDTOToLocation;
+import static by.shylau.weatherapp.service.ConverterService.convertWeatherResponseDTO;
 
 @Controller
 @Slf4j
@@ -64,7 +63,7 @@ public class LocationController {
                 var weather = apiService.fetchDataFromApi(location.getName());
                 list.add(weather);
             } catch (RuntimeException e) {
-                model.addAttribute("errorInternet", "Проверьте интернет");
+                model.addAttribute("error", "Проверьте интернет");
                 return "client/location";
             }
         }
@@ -87,17 +86,16 @@ public class LocationController {
             log.info("LocationController.findLocation: found {}", findLocation);
 
             if (findLocation == null) {
-                model.addAttribute("errorMessage", "Локация " + location + " не найдена");
-               // throw new NotFoundExceptions("Локация " + location + " не найдена");
+                model.addAttribute("error", "Локация " + location + " не найдена");
             } else {
                 model.addAttribute("successMessage", "Локация найдена");
                 model.addAttribute("location", findLocation);
             }
         } catch (HttpClientErrorException.BadRequest e) {
-            model.addAttribute("errorMessage", "Введите название локации: города/деревни");
+            model.addAttribute("error", "Введите название локации: города/деревни");
             return "client/location";
         } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", "Проверьте интернет");
+            model.addAttribute("error", "Проверьте интернет");
             return "client/location";
         }
         return "client/location";
@@ -107,24 +105,24 @@ public class LocationController {
     public String addLocation(@CookieValue(value = "user_id") String userId,
                               @RequestParam("location") String location,
                               Model model) throws JsonProcessingException {
-        WeatherResponseDTO weather;
+        WeatherResponseDTO weatherDTO;
         try {
-            weather = apiService.fetchDataFromApi(location);
+            weatherDTO = apiService.fetchDataFromApi(location);
         } catch (RuntimeException e) {
-            model.addAttribute("errorInternet", "Проверьте интернет");
+            model.addAttribute("error", "Проверьте интернет");
             return "client/location";
         }
         User user = userService.getUserById(Integer.parseInt(userId));
 
         try {
-            locationService.saveLocation(convertWeatherResponseDTOToLocation(weather, user.getId()));
+            locationService.saveLocation(convertWeatherResponseDTO(weatherDTO, user.getId()));
         } catch (RuntimeException e) {
             log.warn("Try add repeat location, {}", location);
-            model.addAttribute("errorTryRepeatAddLocation", "Такая локация уже есть");
+            model.addAttribute("error", "Такая локация уже есть");
             model.addAttribute("name", user.getLogin());
             return "client/location";
         }
-        log.info("LocationController.addLocation(): {}", weather + ", " + userId);
+        log.info("LocationController.addLocation(): {}", weatherDTO + ", " + userId);
 
         return "redirect:/weather/show";
     }

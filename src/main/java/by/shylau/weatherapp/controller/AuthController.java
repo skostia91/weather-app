@@ -57,13 +57,13 @@ public class AuthController {
                                    BindingResult bindingResult,
                                    Model model) {
         if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
-            model.addAttribute("errorRepeatPassword", "Пароль не совпадает с проверочным");
+            model.addAttribute("error", "Пароль не совпадает с проверочным");
             return "auth/regis";
         }
         User user = userMapper.UserDTOToUser(userDTO);
 
         if (FoolProof.defenceForFool(user.getPassword()) != null) {
-            model.addAttribute("foolProof", FoolProof.defenceForFool(user.getPassword()));
+            model.addAttribute("error", FoolProof.defenceForFool(user.getPassword()));
             return "auth/regis";
         }
 
@@ -74,7 +74,7 @@ public class AuthController {
 
         if (!authService.registerUser(user)) {
             log.warn("registration user: db have user with login {}", user.getLogin());
-            model.addAttribute("errorMessage", "Такой пользователь уже существует");
+            model.addAttribute("error", "Такой пользователь уже существует");
 
             return "auth/regis";
         }
@@ -100,16 +100,18 @@ public class AuthController {
 
     @GetMapping("/login-retry")
     public String loginPage(Model model) {
-        model.addAttribute("errorMessage",
+        model.addAttribute("error",
                 "Время сессии истекло. Пожалуйста, введите логин и пароль чтобы зайти");
         return "auth/login";
     }
 
-    //костыль, временное решение проблемы для redirect:/delete/name
-    //не корректно перенаправлял при смерти сессии в аоп
+    /**
+     * Этот метод - костыль, "временное" решение проблемы для redirect:/delete/name
+     *  не корректно перенаправлял при смерти сессии в аоп
+     */
     @GetMapping("/delete/login-retry")
     public String loginPageDeleteSessionDied(Model model) {
-        model.addAttribute("errorMessage",
+        model.addAttribute("error",
                 "Время сессии истекло. Пожалуйста, введите логин и пароль чтобы зайти");
         return "auth/login";
     }
@@ -122,7 +124,7 @@ public class AuthController {
         log.info("verification user {}", user);
 
         if (authService.checkUser(user) || !authService.checkPassword(user)) {
-            model.addAttribute("errorMessage", "Не правильно введены данные. " +
+            model.addAttribute("error", "Не правильно введены данные. " +
                     "Возможно вы не зарегистрировались в системе.");
 
             return "auth/login";
