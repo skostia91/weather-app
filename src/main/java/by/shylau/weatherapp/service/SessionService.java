@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -44,10 +43,10 @@ public class SessionService {
                         .toEpochMilli();
                 long diffInMillis = Math.abs(timeNow - timeSessionDie);
                 long diffInMinutes = diffInMillis / (60 * 1000);
-                log.info("Время жизни у сессии " + session.getId() + ": " + diffInMinutes + " минут");
+                log.info("Время жизни осталось у сессии " + session.getId() + ": " + diffInMinutes + " минут");
 
                 if (timeNow > timeSessionDie) {
-                    log.warn("Сессия умерла у пользователя: " + session.getUserId());
+                    log.error("Сессия умерла у пользователя: " + session.getUserId());
                     sessionRepository.deleteSessionByUserId(session.getUserId());
                 } else {
                     log.info("Сессия действительна для пользователя: " + session.getUserId());

@@ -20,6 +20,10 @@ import org.springframework.stereotype.Component;
 public class SessionAspect {
     SessionService sessionService;
 
+    /**
+     * Методы, которые находятся в скобках, будут проверяться на наличие действующей сессии и при смерти сессии
+     * функционал будет недоступен и пользователь будет redirect на страницу для ввода логина и пароля
+     */
     @Pointcut("execution(* by.shylau.weatherapp.controller.LocationController.home(..)) || " +
             "execution(* by.shylau.weatherapp.controller.LocationController.find(..)) || " +
             "execution(* by.shylau.weatherapp.controller.LocationController.findLocation(..)) || " +

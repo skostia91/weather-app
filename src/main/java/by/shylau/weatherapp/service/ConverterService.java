@@ -1,6 +1,5 @@
 package by.shylau.weatherapp.service;
 
-
 import by.shylau.weatherapp.dto.WeatherResponseDTO;
 import by.shylau.weatherapp.model.Location;
 

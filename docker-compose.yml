@@ -22,6 +22,6 @@ services:
       SPRING_DB_URL: jdbc:postgresql://database:5432/db
       API_KEY: ab9b4386c9316ed51c2bc5791651556c
       API_URL: https://api.openweathermap.org/data/2.5/weather?q=
-      SESSION_TIME_LIFE: 1
+      SESSION_TIME_LIFE: 50
     ports:
       - "8082:8080"

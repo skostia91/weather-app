@@ -116,6 +116,13 @@ public class AuthController {
         return "auth/login";
     }
 
+    /**
+     * В этом методе стоит время жизни сессии в 50 минут(+1 минута после которой будет проверка
+     * и будет удалена недействительная сессия).
+     * Для тестов нужно закомментировать 158 строчку и раскомментировать 157 строчку
+     * - это поменяет время жизни с 50 минут до 50 секунд + 10 секунд после которой
+     * будет проведена проверка(итого через 1 минуту чистого времени сессия должна быть недействительна).
+     */
     @PostMapping("/verification")
     public String verificationUser(HttpServletResponse response,
                                    HttpServletRequest request,
@@ -147,8 +154,8 @@ public class AuthController {
             Session newSession = new Session(
                     sessionId,
                     userId,
-  //                  LocalDateTime.now().plusMinutes(timeLifeSession)); //срок действия сессии 1 минута
-                    LocalDateTime.now().plusHours(timeLifeSession)); //срок действия сессии 1 час
+//                    LocalDateTime.now().plusSeconds(timeLifeSession)); //срок действия сессии 50 секунд
+                    LocalDateTime.now().plusMinutes(timeLifeSession)); //срок действия сессии 50 минут
 
             if (sessionService.checkSessionIntoDB(userId)) {
                 sessionService.deleteSessionByID(userId);

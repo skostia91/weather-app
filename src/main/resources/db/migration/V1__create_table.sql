@@ -16,7 +16,7 @@ CREATE UNIQUE INDEX idx_base_target ON locations (user_id, name);
 
 CREATE TABLE sessions (
                           id varchar(50) PRIMARY KEY,
-                          user_id INTEGER,
+                          user_id int REFERENCES users (id) ON DELETE CASCADE,
                           expires_at TIMESTAMP(6)
 );
 CREATE INDEX sessions_unique_user_id_idx ON sessions (user_id);

@@ -9,4 +9,4 @@ api:
   url: https://api.openweathermap.org/data/2.5/weather?q=
 
 session:
-  timelife: 1
+  timelife: 50

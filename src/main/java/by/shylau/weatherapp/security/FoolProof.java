@@ -1,6 +1,9 @@
 package by.shylau.weatherapp.security;
 
 public class FoolProof {
+    /**
+     * Метод который запрещает пользователю устанавливать некоторые определённые слабые пароли
+     */
     public static String defenceForFool(String password) {
         return switch (password) {
             case "password" -> "Пароль - password??? Серьёзно? Он слишком простой, выбери что-то посложнее.";

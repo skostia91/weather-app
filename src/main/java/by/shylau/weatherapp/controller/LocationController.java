@@ -138,8 +138,26 @@ public class LocationController {
         return "redirect:/weather/show";
     }
 
+    /**
+     * Методы, которые находятся внизу(logoutJoke(), logoutSecond(), logoutThree(), logoutLast())
+     * являются шуткой, которые будут пытаться остановить пользователя от выхода из системы.
+     * <p>
+     * Чтобы убрать этот функционал для проверки системы, необходимо раскомментировать метод
+     * logout, который находится чуть ниже на 150-157 строчке и
+     * закомментировать метод logoutJoke(), который находится на 159-162 строчках
+     */
+
+    //    @GetMapping("/logout")
+//    public String logout(@CookieValue(value = "session_id") String sessionId,
+//                         @CookieValue(value = "user_id") String userId) {
+//
+//        log.info("LocationController.home delete session_id {}", sessionId);
+//        sessionService.deleteSessionByID(Integer.parseInt(userId));
+//        return "auth/login";
+//    }
+
     @GetMapping("/logout")
-    public String logout() {
+    public String logoutJoke() {
         return "client/logout";
     }
 
