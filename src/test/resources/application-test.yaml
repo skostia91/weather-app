@@ -8,7 +8,7 @@ spring:
       ddl-auto: update
 api:
   key: ab9b4386c9316ed51c2bc5791651556c
-  url-location: http://api.openweathermap.org/geo/1.0/direct?q=
+  url-location: http://api.openweathermap.org/geo/1.0/direct
   url-weather: https://api.openweathermap.org/data/2.5/weather
 
 session:

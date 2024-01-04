@@ -34,7 +34,7 @@ public class ApiService {
 
         String result;
 
-        result = restTemplate.getForObject(apiUrlLocation + location +
+        result = restTemplate.getForObject(apiUrlLocation + "?q=" + location +
                 "&limit=" + limitCities +
                 "&appid=" + apiKey + "&units=metric", String.class);
         log.info("fetchLocationFromApi {}", result);

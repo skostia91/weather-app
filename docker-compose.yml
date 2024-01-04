@@ -21,7 +21,7 @@ services:
       SPRING_DB_PASSWORD: 123
       SPRING_DB_URL: jdbc:postgresql://database:5432/db
       API_KEY: ab9b4386c9316ed51c2bc5791651556c
-      API_LOCATION: http://api.openweathermap.org/geo/1.0/direct?q=
+      API_LOCATION: http://api.openweathermap.org/geo/1.0/direct
       API_WEATHER:  https://api.openweathermap.org/data/2.5/weather
       SESSION_TIME_LIFE: 50
     ports:
