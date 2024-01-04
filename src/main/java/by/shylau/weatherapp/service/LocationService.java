@@ -26,7 +26,7 @@ public class LocationService {
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public void deleteLocationByIdAndName(int idUser, String nameLocation) {
-        locationRepository.deleteLocationByIdAndName(idUser, nameLocation);
+    public void deleteLocationById(int idUser, double lat, double lon) {
+        locationRepository.deleteLocationById(idUser, lat, lon);
     }
 }

@@ -3,10 +3,12 @@ package by.shylau.weatherapp.repository;
 import by.shylau.weatherapp.config.TestContainerConfig;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@EnabledIfSystemProperty(named = "skipTestContainers", matches = "false")
 public class LocationRepositoryTest extends TestContainerConfig {
     @Autowired
     private LocationRepository locationRepository;

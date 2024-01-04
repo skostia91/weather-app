@@ -12,6 +12,7 @@ spring:
         dialect: "org.hibernate.dialect.PostgreSQLDialect"
 api:
   key: ${API_KEY}
-  url: ${API_URL}
+  url-location: ${API_LOCATION}
+  url-weather: ${API_WEATHER}
 session:
   timelife: ${SESSION_TIME_LIFE}

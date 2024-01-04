@@ -14,8 +14,8 @@ public interface LocationRepository extends JpaRepository<Location, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Location l WHERE l.userId = :id AND l.name = :name")
-    void deleteLocationByIdAndName(@Param("id") int idUser, @Param("name") String name);
-
-
+    @Query("DELETE FROM Location l WHERE l.userId = :id AND l.latitude = :lat AND l.longitude = :lon")
+    void deleteLocationById(@Param("id") int idUser,
+                            @Param("lat") double lat,
+                            @Param("lon") double lon);
 }

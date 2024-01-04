@@ -12,7 +12,7 @@ CREATE TABLE locations(
                       longitude numeric NOT NULL
 );
 
-CREATE UNIQUE INDEX idx_base_target ON locations (user_id, name);
+CREATE UNIQUE INDEX idx_base_target ON locations (user_id, latitude, longitude);
 
 CREATE TABLE sessions (
                           id varchar(50) PRIMARY KEY,

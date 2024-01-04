@@ -1,6 +1,6 @@
 package by.shylau.weatherapp.controller;
 
-import by.shylau.weatherapp.dto.WeatherResponseDTO;
+import by.shylau.weatherapp.dto.weather.WeatherLocationDTO;
 import by.shylau.weatherapp.model.Location;
 import by.shylau.weatherapp.model.User;
 import by.shylau.weatherapp.service.ApiService;
@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import static by.shylau.weatherapp.service.ConverterService.convertWeatherResponseDTO;
 
 @Controller
 @Slf4j
@@ -49,22 +48,24 @@ public class LocationController {
     }
 
     @GetMapping("/show")
-    public String find(@CookieValue(value = "user_id") String userId,
-                       Model model) throws JsonProcessingException {
+    public String showLocationForUser(@CookieValue(value = "user_id") String userId,
+                                      Model model) throws JsonProcessingException {
         int idUser = Integer.parseInt(userId);
-        User user = userService.getUserById(idUser);
-        model.addAttribute("name", user.getLogin());
+        model.addAttribute("name", userService.getUserById(idUser).getLogin());
 
         List<Location> listLocation = locationService.findAllLocationForUser(idUser);
-        List<WeatherResponseDTO> list = new ArrayList<>();
+        List<WeatherLocationDTO> list = new ArrayList<>();
+        if (listLocation.isEmpty()) {
+            model.addAttribute("error", "Хозяин, у вас пока нет добавленных локаций");
+        }
 
         for (Location location : listLocation) {
             try {
-                var weather = apiService.fetchDataFromApi(location.getName());
+                var weather = apiService.fetchWeatherFromUser(location.getLatitude(), location.getLongitude());
                 list.add(weather);
             } catch (RuntimeException e) {
-                model.addAttribute("error", "Проверьте интернет");
-                return "client/location";
+                model.addAttribute("error", "Хозяин, какая-то проблема со связью. " +
+                        "Возможно вам надо наконец-то заплатить за интернет");
             }
         }
         model.addAttribute("list", list);
@@ -76,78 +77,77 @@ public class LocationController {
     public String findLocation(@CookieValue(value = "user_id") String userId,
                                @RequestParam String location,
                                Model model) throws JsonProcessingException {
+
         User user = userService.getUserById(Integer.parseInt(userId));
         model.addAttribute("name", user.getLogin());
 
         try {
             log.info("LocationController.findLocation: search {}", location);
 
-            String findLocation = apiService.fetchDataFromApi(location).getName();
+            var findLocation = apiService.fetchLocationFromApi(location);
             log.info("LocationController.findLocation: found {}", findLocation);
 
-            if (findLocation == null) {
-                model.addAttribute("error", "Локация " + location + " не найдена");
+            if (Arrays.stream(findLocation).toList().isEmpty()) {
+                model.addAttribute("error", "Хозяин, мы искали везде, но "
+                        + location + " не нашли");
             } else {
-                model.addAttribute("successMessage", "Локация найдена");
-                model.addAttribute("location", findLocation);
+                model.addAttribute("successMessage", "Хозяин, мы нашли:");
+                model.addAttribute("findLocation", findLocation);
             }
         } catch (HttpClientErrorException.BadRequest e) {
-            model.addAttribute("error", "Введите название локации: города/деревни");
-            return "client/location";
+            model.addAttribute("error", "Хозяин, надо ввести название локации: " +
+                    "города/деревни");
         } catch (RuntimeException e) {
-            model.addAttribute("error", "Проверьте интернет");
-            return "client/location";
+            model.addAttribute("error", "Хозяин, какая-то проблема со связью. " +
+                    "Возможно вам надо наконец-то заплатить за интернет");
         }
         return "client/location";
     }
 
     @PostMapping("/addLocation")
     public String addLocation(@CookieValue(value = "user_id") String userId,
-                              @RequestParam("location") String location,
-                              Model model) throws JsonProcessingException {
-        WeatherResponseDTO weatherDTO;
-        try {
-            weatherDTO = apiService.fetchDataFromApi(location);
-        } catch (RuntimeException e) {
-            model.addAttribute("error", "Проверьте интернет");
-            return "client/location";
-        }
+                              @RequestParam String name,
+                              @RequestParam double lat,
+                              @RequestParam double lon,
+                              Model model) {
         User user = userService.getUserById(Integer.parseInt(userId));
 
+        var location = new Location(name, Integer.parseInt(userId), lat, lon);
+
         try {
-            locationService.saveLocation(convertWeatherResponseDTO(weatherDTO, user.getId()));
+            locationService.saveLocation(location);
         } catch (RuntimeException e) {
-            log.warn("Try add repeat location, {}", location);
-            model.addAttribute("error", "Такая локация уже есть");
+            log.warn("Try add repeat location, {}", name + " " + lat + " " + lon);
+            model.addAttribute("error", "Хозяин, такая локация уже есть в списке");
             model.addAttribute("name", user.getLogin());
             return "client/location";
         }
-        log.info("LocationController.addLocation(): {}", weatherDTO + ", " + userId);
-
+        log.info("LocationController.addLocation(): {}", location + ", " + userId);
         return "redirect:/weather/show";
     }
 
-    @GetMapping("/delete/{name}")
+    @PostMapping("/delete")
     public String deleteLocation(@CookieValue(value = "user_id") String userId,
-                                 @PathVariable("name") String name) {
+                                 @RequestParam String lat,
+                                 @RequestParam String lon) {
         log.info("LocationController.deleteLocation userId = {}", userId);
-        log.info("LocationController.deleteLocation name = {}", name);
+        log.info("LocationController.deleteLocation lat = {}", lat);
+        log.info("LocationController.deleteLocation lon = {}", lon);
 
-        locationService.deleteLocationByIdAndName(Integer.parseInt(userId), name);
+        locationService.deleteLocationById(Integer.parseInt(userId), Double.parseDouble(lat), Double.parseDouble(lon));
 
         return "redirect:/weather/show";
     }
 
     /**
-     * Методы, которые находятся внизу(logoutJoke(), logoutSecond(), logoutThree(), logoutLast())
+     * Методы, которые находятся ниже(logoutJoke(), logoutSecond(), logoutThree(), logoutLast())
      * являются шуткой, которые будут пытаться остановить пользователя от выхода из системы.
      * <p>
-     * Чтобы убрать этот функционал для проверки системы, необходимо раскомментировать метод
-     * logout, который находится чуть ниже на 150-157 строчке и
-     * закомментировать метод logoutJoke(), который находится на 159-162 строчках
+     * Чтобы убрать этот функционал для проверки корректной работы сессий,
+     * необходимо раскомментировать метод logout, который находится чуть ниже на 150-157 строчке и
+     * закомментировать метод logoutJoke(), который находится на 158-161 строчках
      */
-
-    //    @GetMapping("/logout")
+//    @GetMapping("/logout")
 //    public String logout(@CookieValue(value = "session_id") String sessionId,
 //                         @CookieValue(value = "user_id") String userId) {
 //
@@ -155,7 +155,6 @@ public class LocationController {
 //        sessionService.deleteSessionByID(Integer.parseInt(userId));
 //        return "auth/login";
 //    }
-
     @GetMapping("/logout")
     public String logoutJoke() {
         return "client/logout";
