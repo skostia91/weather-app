@@ -15,4 +15,8 @@ public class WeatherLocationDTO {
     SysDTO sys;
     double lon;
     double lat;
+
+    public WeatherLocationDTO(String name) {
+        this.name = name;
+    }
 }
