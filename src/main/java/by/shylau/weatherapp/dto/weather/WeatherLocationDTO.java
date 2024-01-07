@@ -10,6 +10,7 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ToString
 public class WeatherLocationDTO {
+    String searchName;
     String name;
     MainDTO main;
     SysDTO sys;

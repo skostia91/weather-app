@@ -21,9 +21,6 @@ public class Location {
     @Column(name = "name", nullable = false)
     String name;
 
-    @Column(name = "search_name", nullable = false)
-    String searchName;
-
     @Column(name = "user_id", nullable = false)
     int userId;
 

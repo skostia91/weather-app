@@ -55,7 +55,7 @@ public class ApiService {
      * популярных локаций.
      */
     @Cacheable(value = "weatherCache", key = "#latitude + '_' + #longitude")
-    public WeatherLocationDTO fetchWeatherFromUser(double latitude, double longitude) throws JsonProcessingException {
+    public WeatherLocationDTO fetchWeatherFromUser(String searchName, double latitude, double longitude) throws JsonProcessingException {
         WeatherLocationDTO weatherLocationDTO = null;
         RestTemplate restTemplate = new RestTemplate();
 
@@ -67,6 +67,7 @@ public class ApiService {
 
         try {
             weatherLocationDTO = objectMapper.readValue(result, WeatherLocationDTO.class);
+            weatherLocationDTO.setSearchName(searchName);
             weatherLocationDTO.setLat(latitude);
             weatherLocationDTO.setLon(longitude);
 

@@ -110,7 +110,8 @@
                 <div class="gray-card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <h4 class="text">Локация: <a th:text="${location.getName}"/></h4>
+                            <h4 class="text">Город: <a th:text="${location.getSearchName}"/></h4>
+                            <h4 class="text">Район метеостанции: <a th:text="${location.getName}"/></h4>
                             <h4 class="text">Страна: <a th:text="${location.getSys.getCountry}"/></h4>
                             <h4 class="text">Температура: <a th:text="${location.getMain.getTemp}"/></h4>
                         </h5>

@@ -57,7 +57,10 @@ public class LocationController {
         }
 
         for (Location location : listLocation) {
-                var weather = apiService.fetchWeatherFromUser(location.getLatitude(), location.getLongitude());
+                var weather = apiService.fetchWeatherFromUser(
+                        location.getName(),
+                        location.getLatitude(),
+                        location.getLongitude());
                 list.add(weather);
 
         }
