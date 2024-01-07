@@ -80,7 +80,7 @@ public class LocationController {
                 model.addAttribute("error", "Хозяин, мы искали везде, но "
                         + location + " не нашли. Может вы какую-то ерунду вбили в поиск?");
             } else {
-                model.addAttribute("message", "Хозяин, мы нашли:");
+                model.addAttribute("message", "Хозяин, вот что мы нашли по запросу: " + location);
                 model.addAttribute("findLocation", findLocation);
             }
         } catch (HttpClientErrorException.BadRequest e) {
