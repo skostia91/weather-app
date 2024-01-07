@@ -34,12 +34,6 @@ public class LocationController {
 
     @GetMapping("/home")
     public String home(@CookieValue(value = "user_id") String userId, Model model) {
-        log.info("LocationController.home get user_id {}", userId);
-
-        User user = userService.getUserById(Integer.parseInt(userId));
-        String loginUser = user.getLogin();
-
-        model.addAttribute("name", loginUser);
 
         return "client/location";
     }
@@ -48,7 +42,6 @@ public class LocationController {
     public String showLocationForUser(@CookieValue(value = "user_id") String userId,
                                       Model model) throws JsonProcessingException {
         int idUser = Integer.parseInt(userId);
-        model.addAttribute("name", userService.getUserById(idUser).getLogin());
 
         List<Location> listLocation = locationService.findAllLocationForUser(idUser);
         List<WeatherLocationDTO> list = new ArrayList<>();
@@ -71,28 +64,24 @@ public class LocationController {
 
     @PostMapping("/findLocation")
     public String findLocation(@CookieValue(value = "user_id") String userId,
-                               @RequestParam String location,
-                               Model model) throws JsonProcessingException {
-
-        User user = userService.getUserById(Integer.parseInt(userId));
-        model.addAttribute("name", user.getLogin());
+                               Model model,
+                               @RequestParam String location) throws JsonProcessingException {
+        log.info("LocationController.findLocation: search {}", location);
 
         try {
-            log.info("LocationController.findLocation: search {}", location);
-
             var findLocation = apiService.fetchLocationFromApi(location);
             log.info("LocationController.findLocation: found {}", findLocation);
 
             if (Arrays.stream(findLocation).toList().isEmpty()) {
                 model.addAttribute("error", "Хозяин, мы искали везде, но "
-                        + location + " не нашли");
+                        + location + " не нашли. Может вы какую-то ерунду вбили в поиск?");
             } else {
                 model.addAttribute("message", "Хозяин, мы нашли:");
                 model.addAttribute("findLocation", findLocation);
             }
         } catch (HttpClientErrorException.BadRequest e) {
-            model.addAttribute("error", "Хозяин, надо ввести название локации: " +
-                    "города/деревни");
+            model.addAttribute("error", "Хозяин, понятно что это сложно, но " +
+                    "постарайтесь ввести название локации: города/деревни, а не пустую строку вбивать");
         }
         return "client/location";
     }
@@ -137,8 +126,8 @@ public class LocationController {
      * являются шуткой, которые будут пытаться остановить пользователя от выхода из системы.
      * <p>
      * Чтобы убрать этот функционал для проверки корректной работы сессий,
-     * необходимо раскомментировать метод logout, который находится чуть ниже на 150-157 строчке и
-     * закомментировать метод logoutJoke(), который находится на 158-161 строчках
+     * необходимо раскомментировать метод logout, который находится чуть ниже на 132-139 строчке и
+     * закомментировать метод logoutJoke(), который находится на 140-143 строчках
      */
 //    @GetMapping("/logout")
 //    public String logout(@CookieValue(value = "session_id") String sessionId,
