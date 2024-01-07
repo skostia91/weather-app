@@ -32,6 +32,11 @@ public class LocationController {
     LocationService locationService;
     SessionService sessionService;
 
+    /**
+     * В этом и некоторых других методах в аргументах метода будут присутствовать
+     * @CookieValue(value = "user_id") String userId, Model model
+     * которые не будут использоваться напрямую в этом методе, но нужны для работы с аоп в классе UserAspect
+     * */
     @GetMapping("/home")
     public String home(@CookieValue(value = "user_id") String userId, Model model) {
 
@@ -55,7 +60,6 @@ public class LocationController {
                         location.getLatitude(),
                         location.getLongitude());
                 list.add(weather);
-
         }
         model.addAttribute("list", list);
 
