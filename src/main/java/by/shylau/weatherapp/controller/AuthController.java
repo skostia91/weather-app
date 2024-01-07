@@ -144,8 +144,12 @@ public class AuthController {
             String sessionId = session.getId();
             session.setAttribute("userId", userId);
 
+            Cookie sessionCookie = new Cookie("session_id", sessionId);
             Cookie userIdCookie = new Cookie("user_id", String.valueOf(userId));
 
+            sessionCookie.setPath("/");
+
+            response.addCookie(sessionCookie);
             response.addCookie(userIdCookie);
 
             Session newSession = new Session(
