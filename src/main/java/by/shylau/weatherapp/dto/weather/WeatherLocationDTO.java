@@ -16,7 +16,4 @@ public class WeatherLocationDTO {
     double lon;
     double lat;
 
-    public WeatherLocationDTO(String name) {
-        this.name = name;
-    }
 }

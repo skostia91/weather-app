@@ -144,19 +144,19 @@ public class AuthController {
             String sessionId = session.getId();
             session.setAttribute("userId", userId);
 
-            Cookie sessionCookie = new Cookie("session_id", sessionId);
+    //        Cookie sessionCookie = new Cookie("session_id", sessionId);
             Cookie userIdCookie = new Cookie("user_id", String.valueOf(userId));
 
-            sessionCookie.setPath("/");
+      //      sessionCookie.setPath("/");
 
-            response.addCookie(sessionCookie);
+  //          response.addCookie(sessionCookie);
             response.addCookie(userIdCookie);
 
             Session newSession = new Session(
                     sessionId,
                     userId,
-//                    LocalDateTime.now().plusSeconds(timeLifeSession)); //срок действия сессии 50 секунд
-                    LocalDateTime.now().plusMinutes(timeLifeSession)); //срок действия сессии 50 минут
+                    LocalDateTime.now().plusSeconds(timeLifeSession)); //срок действия сессии 50 секунд
+//                    LocalDateTime.now().plusMinutes(timeLifeSession)); //срок действия сессии 50 минут
 
             if (sessionService.checkSessionIntoDB(userId)) {
                 sessionService.deleteSessionByID(userId);

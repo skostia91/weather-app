@@ -23,7 +23,7 @@ public class LocationService {
         locationRepository.save(location);
     }
 
-    public List<Location> findAllLocationForUser(int idUser) {  //тут есть ошибка? или надо чтобы путсая коллекция возвращалась?
+    public List<Location> findAllLocationForUser(int idUser) {
         return locationRepository.findByUserId(idUser);
     }
 

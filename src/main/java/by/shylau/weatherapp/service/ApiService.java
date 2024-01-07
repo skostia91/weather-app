@@ -86,8 +86,8 @@ public class ApiService {
      */
     @CacheEvict(value = "weatherCache", allEntries = true)
     @Scheduled(fixedRate = 3600000)   // удаление кэша через час
-//    @Scheduled(fixedRate = 15000)   // удаление кэша через 15 секунд
+    //  @Scheduled(fixedRate = 15000)   // удаление кэша через 15 секунд
     public void evictAllCaches() {
-        log.error("Кэш удалён");
+        log.warn("Данные из weatherCache удалены. Кэш пуст");
     }
 }

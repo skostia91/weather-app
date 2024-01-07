@@ -17,6 +17,14 @@
             font-size: 16px;
             border: none;
             cursor: pointer;
+            align-self: flex-end;
+        }
+        .card-body {
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .gray-card {
             background-color: #c5c5c5;
@@ -62,7 +70,7 @@
     <input type="text" id="location" name="location">
     <input type="submit" value="Найти">
 </form>
-<div th:if="${successMessage}" th:text="${successMessage}" style="color: green;"></div>
+<div th:if="${message}" th:text="${message}" style="color: green;"></div>
 <div th:if="${error}" th:text="${error}" style="color: red;"></div>
 
 <div th:if="${findLocation}">

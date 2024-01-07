@@ -33,10 +33,7 @@ public class LocationController {
     SessionService sessionService;
 
     @GetMapping("/home")
-    public String home(@CookieValue(value = "user_id") String userId,
-                       @CookieValue(value = "session_id") String sessionId,
-                       Model model) {
-        log.info("LocationController.home get session_id {}", sessionId);
+    public String home(@CookieValue(value = "user_id") String userId, Model model) {
         log.info("LocationController.home get user_id {}", userId);
 
         User user = userService.getUserById(Integer.parseInt(userId));
@@ -60,13 +57,9 @@ public class LocationController {
         }
 
         for (Location location : listLocation) {
-            try {
                 var weather = apiService.fetchWeatherFromUser(location.getLatitude(), location.getLongitude());
                 list.add(weather);
-            } catch (RuntimeException e) {
-                model.addAttribute("error", "Хозяин, какая-то проблема со связью. " +
-                        "Возможно вам надо наконец-то заплатить за интернет");
-            }
+
         }
         model.addAttribute("list", list);
 
@@ -91,15 +84,12 @@ public class LocationController {
                 model.addAttribute("error", "Хозяин, мы искали везде, но "
                         + location + " не нашли");
             } else {
-                model.addAttribute("successMessage", "Хозяин, мы нашли:");
+                model.addAttribute("message", "Хозяин, мы нашли:");
                 model.addAttribute("findLocation", findLocation);
             }
         } catch (HttpClientErrorException.BadRequest e) {
             model.addAttribute("error", "Хозяин, надо ввести название локации: " +
                     "города/деревни");
-        } catch (RuntimeException e) {
-            model.addAttribute("error", "Хозяин, какая-то проблема со связью. " +
-                    "Возможно вам надо наконец-то заплатить за интернет");
         }
         return "client/location";
     }
@@ -171,8 +161,8 @@ public class LocationController {
     }
 
     @GetMapping("/logout-last")
-    public String logoutLast(@CookieValue(value = "session_id") String sessionId,
-                             @CookieValue(value = "user_id") String userId) {
+    public String logoutLast(@CookieValue(value = "user_id") String userId,
+                             @CookieValue(value = "session_id") String sessionId) {
 
         log.info("LocationController.home delete session_id {}", sessionId);
         sessionService.deleteSessionByID(Integer.parseInt(userId));
