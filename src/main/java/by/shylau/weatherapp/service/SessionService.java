@@ -31,7 +31,7 @@ public class SessionService {
         executor.scheduleAtFixedRate(this::checkAndInvalidateSessions, 0, 1, TimeUnit.MINUTES);
     }
 
-    private void checkAndInvalidateSessions() {
+    public void checkAndInvalidateSessions() {
         long timeNow = System.currentTimeMillis();
         log.info("time now {}", timeNow / (60 * 1000));
         List<Session> sessions = getSessions();

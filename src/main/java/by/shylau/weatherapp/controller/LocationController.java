@@ -76,7 +76,7 @@ public class LocationController {
             var findLocation = apiService.fetchLocationFromApi(location);
             log.info("LocationController.findLocation: found {}", findLocation);
 
-            if (Arrays.stream(findLocation).toList().isEmpty()) {
+            if (findLocation.isEmpty()) {
                 model.addAttribute("error", "Хозяин, мы искали везде, но "
                         + location + " не нашли. Может вы какую-то ерунду вбили в поиск?");
             } else {

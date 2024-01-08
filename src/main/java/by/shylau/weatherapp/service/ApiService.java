@@ -16,6 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Slf4j
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -29,7 +32,7 @@ public class ApiService {
     @Value(value = "${api.url-weather}")
     String apiUrlWeather;
 
-    public LocationDTO[] fetchLocationFromApi(String location) throws JsonProcessingException {
+    public List<LocationDTO> fetchLocationFromApi(String location) throws JsonProcessingException {
         final int limitCities = 5;
 
         LocationDTO[] locationDTOS = new LocationDTO[0];
@@ -47,7 +50,7 @@ public class ApiService {
         } catch (JsonMappingException e) {
             throw new JsonParseException("incorrect JSON parse in fetchLocationFromApi: ", e);
         }
-        return locationDTOS;
+        return Arrays.stream(locationDTOS).toList();
     }
 
     /**
@@ -82,8 +85,8 @@ public class ApiService {
     /**
      * В этом методе(evictAllCaches) настроено удаление кэша через час, для того чтобы были корректные данные
      * о погоде. Обновляется кэш каждый час (3600000 миллисекунд) через аннотацию @Sсheduled.
-     * Для ручного тестирования функциональности удаление кэша нужно закомментировать строчку 88
-     * и раскомментировать 89 строчку.
+     * Для ручного тестирования функциональности удаление кэша нужно закомментировать строчку 92
+     * и раскомментировать 93 строчку.
      */
     @CacheEvict(value = "weatherCache", allEntries = true)
     @Scheduled(fixedRate = 3600000)   // удаление кэша через час

@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "locations")

@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  database:
+    image: 'postgres:16.0'
+    container_name: 'test-db'
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: root
+    ports:
+      - "15432:5432"
+  app:
+    build: .
+    restart: always
+    container_name: 'test-app'
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DB_USER: root
+      SPRING_DB_PASSWORD: 123
+      SPRING_DB_URL: jdbc:postgresql://database:5432/db
+      API_KEY: ab9b4386c9316ed51c2bc5791651556c
+      API_LOCATION: http://api.openweathermap.org/geo/1.0/direct
+      API_WEATHER:  https://api.openweathermap.org/data/2.5/weather
+      SESSION_TIME_LIFE: 50
+    ports:
+      - "8082:8080"

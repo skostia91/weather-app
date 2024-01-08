@@ -1,39 +1,58 @@
 package by.shylau.weatherapp.security;
 
+import by.shylau.weatherapp.config.TestContainerConfig;
 import by.shylau.weatherapp.model.User;
 import by.shylau.weatherapp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mindrot.jbcrypt.BCrypt;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.Optional;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(MockitoExtension.class)
-class AuthServiceTest {
-    @Mock
-    private UserRepository userRepository;
-    @InjectMocks
-    private AuthService authService;
+@EnabledIfSystemProperty(named = "skipTestContainers", matches = "false")
+class AuthServiceTest extends TestContainerConfig {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    AuthService authService;
 
     @Test
-    public void testCheckUser_UserExists() {
-        User existingUser = new User(1, "existingUser", "password123");
-        when(userRepository.findByLogin("existingUser")).thenReturn(Optional.of(existingUser));
+    void registerUser_Success() {
+        User user = new User("testUser", "password123");
 
-        boolean result = authService.checkUser(existingUser);
+        boolean result = authService.registerUser(user);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void registerUser_RepeatUser() {
+        User user = new User("name", "password123");
+        User userRepeatName = new User("name", "password12222");
+        authService.registerUser(user);
+
+        boolean result = authService.registerUser(userRepeatName);
 
         assertFalse(result);
     }
 
     @Test
-    public void testCheckUser_UserDoesNotExist() {
-        User newUser = new User(1, "newUser", "newPassword");
-        when(userRepository.findByLogin("newUser")).thenReturn(Optional.empty());
+    void registerUser_NoRepeatUser() {
+        User user = new User("name", "password123");
+        User userNoRepeatName = new User("valera", "password123");
+        authService.registerUser(user);
+
+        boolean result = authService.registerUser(userNoRepeatName);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void checkUser_UserDoesNotExist() {
+        User newUser = new User("newUser", "newPassword");
 
         boolean result = authService.checkUser(newUser);
 
@@ -41,43 +60,23 @@ class AuthServiceTest {
     }
 
     @Test
-    public void testCheckPasswordValidPassword() {
-        User guest = new User(1, "testUser", "password123");
-        User user = new User(1, "testUser", BCrypt.hashpw("password123", BCrypt.gensalt()));
-        when(userRepository.findByLogin("testUser")).thenReturn(Optional.of(user));
+    void checkPassword_ValidPassword() {
+        User user = new User("name", "password123");
+        User user1 = new User("name", "password123");
+        authService.registerUser(user);
 
-        boolean result = authService.checkPassword(guest);
-
-        assertTrue(result);
-    }
-
-    @Test
-    public void testCheckPasswordIsNotValidPassword() {
-        User guest = new User(1, "testUser", "131213123");
-        User user = new User(1, "testUser", BCrypt.hashpw("password123", BCrypt.gensalt()));
-        when(userRepository.findByLogin("testUser")).thenReturn(Optional.of(user));
-
-        boolean result = authService.checkPassword(guest);
-
-        assertFalse(result);
-    }
-
-    @Test
-    public void testRegisterUserSuccess() {
-        User user = new User(1, "testUser", "password123");
-        when(userRepository.save(user)).thenReturn(user);
-
-        boolean result = authService.registerUser(user);
+        boolean result = authService.checkPassword(user1);
 
         assertTrue(result);
     }
 
     @Test
-    public void testRegisterUserFailure() {
-        User user = new User(1, "testUser", "password123");
-        when(userRepository.save(user)).thenThrow(new RuntimeException());
+    void checkPassword_NoValidPassword() {
+        User user = new User("name", "password123");
+        User userRepeatName = new User("name", "fake");
+        authService.registerUser(user);
 
-        boolean result = authService.registerUser(user);
+        boolean result = authService.checkPassword(userRepeatName);
 
         assertFalse(result);
     }

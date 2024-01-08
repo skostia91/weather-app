@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FoolProofTest {
     @Test
-    public void testDefenceForFool_WeakPassword() {
+    void foolProof_WeakPassword() {
         String weakPassword = "password";
 
         String result = defenceForFool(weakPassword);
@@ -16,7 +16,7 @@ class FoolProofTest {
     }
 
     @Test
-    public void testDefenceForFool_AnotherWeakPassword() {
+    void foolProof_AnotherWeakPassword() {
         String anotherWeakPassword = "111";
 
         String result = defenceForFool(anotherWeakPassword);
@@ -25,7 +25,7 @@ class FoolProofTest {
     }
 
     @Test
-    public void testDefenceForFool_StrongPassword() {
+    void foolProof_StrongPassword() {
         String strongPassword = "aBcD1234!";
 
         String result = defenceForFool(strongPassword);

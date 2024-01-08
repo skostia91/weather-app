@@ -16,12 +16,12 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     @Mock
-    private UserRepository userRepository;
+    UserRepository userRepository;
     @InjectMocks
-    private UserService userService;
+    UserService userService;
 
     @Test
-    public void testGetUserByIdSuccess() {
+    void getUserById_Success() {
         int userId = 1;
         User user = new User("testUser", "password123");
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -33,7 +33,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByIdNotFound() {
+    void getUserById_NotFound() {
         int userId = 1;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -43,7 +43,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByNameSuccess() {
+    void getUserByLogin_Success() {
         String userName = "testUser";
         User user = new User("testUser", "password123");
         when(userRepository.findByLogin(userName)).thenReturn(Optional.of(user));
@@ -55,7 +55,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByNameNotFound() {
+    void getUserByLogin_NotFound() {
         String userName = "incorrectName";
         when(userRepository.findByLogin(userName)).thenReturn(Optional.empty());
 
