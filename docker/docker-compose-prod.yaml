@@ -17,7 +17,7 @@ services:
     build: ..
     restart: always
     container_name: 'test-app'
-    image: skostia91/shchuchynszczynski-weather-observer:1.0.1
+    image: skostia91/shchuchynszczynski-weather-observer:latest
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       SPRING_DB_USER: ${SPRING_DB_USER}

@@ -21,7 +21,7 @@ class FoolProofTest {
 
         String result = defenceForFool(anotherWeakPassword);
 
-        assertEquals("Такой пароль легко взломать и бандиты могут узнать в каких городах ты смотришь погоду. Поменяй", result);
+        assertEquals("Такой пароль легко взломать и бандиты могут узнать в каких городах ты смотришь погоду. Поменяй пароль", result);
     }
 
     @Test
