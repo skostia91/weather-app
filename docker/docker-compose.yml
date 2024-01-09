@@ -12,7 +12,7 @@ services:
     ports:
       - "15432:5432"
   app:
-    build: .
+    build: ..
     restart: always
     container_name: 'test-app'
     environment:

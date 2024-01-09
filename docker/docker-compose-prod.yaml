@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  database:
+    image: 'postgres:16.0'
+    container_name: 'test-db'
+    env_file:
+      - .env
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+    ports:
+      - "15432:5432"
+  app:
+    build: ..
+    restart: always
+    container_name: 'test-app'
+    image: skostia91/shchuchynszczynski-weather-observer:1.0.1
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_DB_USER: ${SPRING_DB_USER}
+      SPRING_DB_PASSWORD: ${SPRING_DB_PASSWORD}
+      SPRING_DB_URL: ${SPRING_DB_URL}
+      API_KEY: ${API_KEY}
+      API_LOCATION: ${API_LOCATION}
+      API_WEATHER:  ${API_WEATHER}
+      SESSION_TIME_LIFE: ${SESSION_TIME_LIFE}
+    ports:
+      - "8082:8080"

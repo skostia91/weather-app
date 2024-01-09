@@ -19,7 +19,6 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService {
     UserRepository userRepository;
-    int a = 0;
 
     public User getUserByLogin(String name) {
         User user = null;
