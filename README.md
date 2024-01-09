@@ -79,8 +79,8 @@ Logout: информация как отключить этот функцион
 ## 5. Запуск
 В docker-compose-dev.yaml файле стоят захардкоженные значения для более простого запуска ревьюэру.
 Запуск должен быть корректен через команды терминала idea
-cd docker
-docker-compose -f docker-compose-dev.yaml up -d
+### cd docker
+### docker-compose -f docker-compose-dev.yaml up -d
 
 ввод в браузере 
-localhost:8082/weather
+### localhost:8082/weather
