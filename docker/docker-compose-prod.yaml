@@ -14,7 +14,7 @@ services:
     ports:
       - "15432:5432"
   app:
-    image: skostia91/shchuchynszczynski-weather-observer:1.0.3
+    build: ..
     restart: always
     container_name: 'test-app'
     environment:
