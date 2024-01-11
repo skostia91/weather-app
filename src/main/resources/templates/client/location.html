@@ -29,6 +29,27 @@
         .gray-card {
             background-color: #c5c5c5;
         }
+         .pagination {
+             list-style-type: none;
+             display: flex;
+             justify-content: center;
+             padding: 0;
+         }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            color: #fff;
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .pagination a:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
     </style>
     <title>Личный кабинет</title>
 
@@ -127,5 +148,20 @@
     </div>
 </div>
 
+<br/>
+
+<div th:if="${totalPages > 1}">
+    <ul class="pagination">
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{'/weather/show?page=' + ${currentPage - 1}}">&laquo;</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{'/weather/show?page=' + ${i}} " th:text="${i}"></a>
+        </li>
+        <li th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{'/weather/show?page=' + ${currentPage + 1}}">&raquo;</a>
+        </li>
+    </ul>
+</div>
 </body>
 </html>

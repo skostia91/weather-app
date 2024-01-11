@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,8 @@ public class LocationController {
 
     @GetMapping("/show")
     public String showLocationForUser(@CookieValue(value = "user_id") String userId,
-                                      Model model) throws JsonProcessingException {
+                                      Model model,
+                                      @RequestParam(defaultValue = "0") int page) throws JsonProcessingException {
         int idUser = Integer.parseInt(userId);
 
         List<Location> listLocation = locationService.findAllLocationForUser(idUser);
@@ -60,7 +62,11 @@ public class LocationController {
                         location.getLongitude());
                 list.add(weather);
         }
-        model.addAttribute("list", list);
+        Page<WeatherLocationDTO> locationDTOS = locationService.findPaginated(list, page, 3);
+
+        model.addAttribute("list", locationDTOS.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", locationDTOS.getTotalPages());
 
         return "client/location";
     }
