@@ -1,9 +1,12 @@
 package by.shylau.weatherapp.security;
 
+import by.shylau.weatherapp.dto.UserDTO;
+import by.shylau.weatherapp.mapper.UserMapper;
 import by.shylau.weatherapp.model.User;
 import by.shylau.weatherapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
+    UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+
+    public String registrationUser(UserDTO userDTO) {
+        if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
+            return "Пароль не совпадает с проверочным";
+        }
+        User user = userMapper.userDTOToUser(userDTO);
+
+        if (FoolProof.defenceForFool(user.getPassword()) != null) {
+            return FoolProof.defenceForFool(user.getPassword());
+        }
+
+        log.info("registration user: try register new user {}", user);
+
+        if (!saveUserInSystem(user)) {
+            log.warn("registration user: db have user with login {}", user.getLogin());
+
+            return "Такой пользователь уже существует";
+        }
+        return null;
+    }
+
 
     public boolean checkUser(User guest) {
         Optional<User> user = userRepository.findByLogin(guest.getLogin());
@@ -32,7 +57,7 @@ public class AuthService {
         return false;
     }
 
-    public boolean registerUser(User user) {
+    public boolean saveUserInSystem(User user) {
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         try {
             userRepository.save(user);

@@ -27,7 +27,7 @@ class SessionServiceTest extends TestContainerConfig {
     @Test
     void checkSessionIntoDB_SessionAlive() {
         User user = new User("vasil", "random");
-        authService.registerUser(user);
+        authService.saveUserInSystem(user);
 
         var idUser = userRepository.findByLogin(user.getLogin()).get().getId();
         Session session = new Session("111",
@@ -41,7 +41,7 @@ class SessionServiceTest extends TestContainerConfig {
     @Test
     void checkSessionIntoDB_DeadSession() {
         User user = new User("vasil", "random");
-        authService.registerUser(user);
+        authService.saveUserInSystem(user);
 
         var idUser = userRepository.findByLogin(user.getLogin()).get().getId();
         Session session = new Session("111",

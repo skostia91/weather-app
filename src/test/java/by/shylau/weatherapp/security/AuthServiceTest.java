@@ -23,7 +23,7 @@ class AuthServiceTest extends TestContainerConfig {
     void registerUser_Success() {
         User user = new User("testUser", "password123");
 
-        boolean result = authService.registerUser(user);
+        boolean result = authService.saveUserInSystem(user);
 
         assertTrue(result);
     }
@@ -32,9 +32,9 @@ class AuthServiceTest extends TestContainerConfig {
     void registerUser_RepeatUser() {
         User user = new User("name", "password123");
         User userRepeatName = new User("name", "password12222");
-        authService.registerUser(user);
+        authService.saveUserInSystem(user);
 
-        boolean result = authService.registerUser(userRepeatName);
+        boolean result = authService.saveUserInSystem(userRepeatName);
 
         assertFalse(result);
     }
@@ -43,9 +43,9 @@ class AuthServiceTest extends TestContainerConfig {
     void registerUser_NoRepeatUser() {
         User user = new User("name", "password123");
         User userNoRepeatName = new User("valera", "password123");
-        authService.registerUser(user);
+        authService.saveUserInSystem(user);
 
-        boolean result = authService.registerUser(userNoRepeatName);
+        boolean result = authService.saveUserInSystem(userNoRepeatName);
 
         assertTrue(result);
     }
@@ -63,7 +63,7 @@ class AuthServiceTest extends TestContainerConfig {
     void checkPassword_ValidPassword() {
         User user = new User("name", "password123");
         User user1 = new User("name", "password123");
-        authService.registerUser(user);
+        authService.saveUserInSystem(user);
 
         boolean result = authService.checkPassword(user1);
 
@@ -74,7 +74,7 @@ class AuthServiceTest extends TestContainerConfig {
     void checkPassword_NoValidPassword() {
         User user = new User("name", "password123");
         User userRepeatName = new User("name", "fake");
-        authService.registerUser(user);
+        authService.saveUserInSystem(user);
 
         boolean result = authService.checkPassword(userRepeatName);
 

@@ -34,11 +34,11 @@ import java.time.LocalDateTime;
 @RequestMapping("/weather")
 public class AuthController {
     @Value(value = "${session.timelife}")
-    @NonFinal int timeLifeSession;
+    @NonFinal
+    int timeLifeSession;
     AuthService authService;
     SessionService sessionService;
-     UserService userService;
-    UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    UserService userService;
 
     @GetMapping
     public String start() {
@@ -56,26 +56,8 @@ public class AuthController {
                                    @ModelAttribute("user") @Valid UserDTO userDTO,
                                    BindingResult bindingResult,
                                    Model model) {
-        if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
-            model.addAttribute("error", "Пароль не совпадает с проверочным");
-            return "auth/regis";
-        }
-        User user = userMapper.UserDTOToUser(userDTO);
-
-        if (FoolProof.defenceForFool(user.getPassword()) != null) {
-            model.addAttribute("error", FoolProof.defenceForFool(user.getPassword()));
-            return "auth/regis";
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "auth/regis";
-        }
-        log.info("registration user: try register new user {}", user);
-
-        if (!authService.registerUser(user)) {
-            log.warn("registration user: db have user with login {}", user.getLogin());
-            model.addAttribute("error", "Такой пользователь уже существует");
-
+        if (authService.registrationUser(userDTO) != null || bindingResult.hasErrors()) {
+            model.addAttribute("error", authService.registrationUser(userDTO));
             return "auth/regis";
         }
 
@@ -107,7 +89,7 @@ public class AuthController {
 
     /**
      * Этот метод - костыль, "временное" решение проблемы для redirect:/delete/name
-     *  не корректно перенаправлял при смерти сессии в аоп
+     * не корректно перенаправлял при смерти сессии в аоп
      */
     @GetMapping("/delete/login-retry")
     public String loginPageDeleteSessionDied(Model model) {
