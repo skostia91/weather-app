@@ -37,7 +37,7 @@ public class AuthController {
     @NonFinal int timeLifeSession;
     AuthService authService;
     SessionService sessionService;
-     UserService userService;
+    UserService userService;
     UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     @GetMapping
@@ -60,7 +60,7 @@ public class AuthController {
             model.addAttribute("error", "Пароль не совпадает с проверочным");
             return "auth/regis";
         }
-        User user = userMapper.UserDTOToUser(userDTO);
+        User user = userMapper.userDTOToUser(userDTO);
 
         if (FoolProof.defenceForFool(user.getPassword()) != null) {
             model.addAttribute("error", FoolProof.defenceForFool(user.getPassword()));
